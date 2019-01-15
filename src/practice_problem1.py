@@ -41,14 +41,14 @@ def main():
     ###########################################################################
 
     #run_test_init()
-    run_test_append_string()
-    # run_test_double()
-    # run_test_shrink()
-    # run_test_double_then_shrink()
-    # run_test_reset()
-    # run_test_steal()
-    # run_test_get_history()
-    # run_test_combined_box()
+    #run_test_append_string()
+    #run_test_double()
+    #run_test_shrink()
+    #run_test_double_then_shrink()
+    #run_test_reset()
+    #run_test_steal()
+    run_test_get_history()
+    #run_test_combined_box()
 
 
 ###############################################################################
@@ -99,6 +99,8 @@ class Box(object):
             self.contents=contents
         else:
             self.contents=''
+        self.newcontents=self.contents
+        self.newvolume=self.volume
         # ---------------------------------------------------------------------
         # DONE: 2. Implement and test this function.
         #     See the testing code (below) for more examples.
@@ -140,11 +142,22 @@ class Box(object):
         Type hints:
           :type additional_contents: str
         """
+        space=''
 
-        self.contents=self.contents+self.append_string(additional_contents)
+        self.contents=self.contents+additional_contents
+        new=self.contents
+        string=''
+        for k in range(self.volume):
+            if k<len(self.contents):
+                string=string+self.contents[k]
+        self.contents=string
+        for k in range(self.volume,len(new)):
+            space=space+new[k]
+
+        return space
 
         # ---------------------------------------------------------------------
-        # TODO: 3. Implement and test this function.
+        # DONE: 3. Implement and test this function.
         #     See the testing code (below) for more examples.
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
@@ -200,8 +213,10 @@ class Box(object):
           #   s is 'Robot Fun'   [this is the part of the doubled
           #                       contents that did NOT fit]
         """
+        string2=self.append_string(self.contents)
+        return string2
         # ---------------------------------------------------------------------
-        # TODO: 4. Implement and test this function.
+        # DONE: 4. Implement and test this function.
         #     The testing code is already written for you (above).
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
@@ -249,8 +264,21 @@ class Box(object):
         Type hints:
           :type new_volume: int
         """
+        space=''
+        new = self.contents
+        string = ''
+        self.volume = new_volume
+        for k in range(self.volume):
+            if k < len(self.contents):
+                string = string + self.contents[k]
+        self.contents=string
+        for k in range(self.volume, len(new)):
+            space = space + new[k]
+
+        return space
+
         # ---------------------------------------------------------------------
-        # TODO: 5. Implement and test this function.
+        # DONE: 5. Implement and test this function.
         #     The testing code is already written for you (above).
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
@@ -305,8 +333,12 @@ class Box(object):
         Type hints:
           :type new_volume: int
         """
+        length=len(self.double())
+        string=self.shrink(new_volume)
+        string=len(string)+length
+        return string
         # ---------------------------------------------------------------------
-        # TODO: 6. Implement and test this function.
+        # DONE: 6. Implement and test this function.
         #     The testing code is already written for you (above).
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
@@ -324,8 +356,11 @@ class Box(object):
           Changes this Box's contents and volume to whatever they were
           when this Box was constructed.
         """
+        self.contents=self.newcontents
+        self.volume=self.newvolume
+
         # ---------------------------------------------------------------------
-        # TODO: 7. Implement and test this function.
+        # DONE: 7. Implement and test this function.
         #     The testing code is already written for you (above).
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
@@ -352,8 +387,11 @@ class Box(object):
         Type hints:
           :type other_box: Box
         """
+
+        contents=self.append_string(other_box.contents)
+        other_box.contents=contents
         # ---------------------------------------------------------------------
-        # TODO: 8. Implement and test this function.
+        # DONE: 8. Implement and test this function.
         #     The testing code is already written for you (above).
         # ---------------------------------------------------------------------
         # ---------------------------------------------------------------------
@@ -395,6 +433,12 @@ class Box(object):
           h = b.get_history()
           #   h is now ['GoodGo', 'GoodBye']
         """
+        contents=self.contents
+        if self.reset():
+            return [contents]
+        else:
+            return []
+
         # ---------------------------------------------------------------------
         # TODO: 9. Implement and test this function.
         #     The testing code is already written for you (above).
@@ -422,6 +466,11 @@ class Box(object):
         Type hints:
           :type other_box: Box
         """
+
+        volume=self.volume+other_box.volume
+        contents=self.contents+other_box.contents
+        return contents, volume
+
         # ---------------------------------------------------------------------
         # TODO: 10. Implement and test this function.
         #     The testing code is already written for you (above).
